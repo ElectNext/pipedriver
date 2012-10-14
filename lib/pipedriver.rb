@@ -47,7 +47,7 @@ require 'pipedriver/user'
 require 'pipedriver/user_setting'
 
 # Errors
-require 'pipedriver/errors/stripe_error'
+require 'pipedriver/errors/pipedrive_error'
 require 'pipedriver/errors/api_error'
 require 'pipedriver/errors/api_connection_error'
 require 'pipedriver/errors/invalid_request_error'
@@ -88,7 +88,7 @@ module Pipedriver
 
   def self.request(method, url, api_key, params={}, headers={})
     api_key ||= @@api_key
-    raise AuthenticationError.new('No API key provided.  (HINT: set your API key using "Pipedriver.api_key = <API-KEY>".  You can generate API keys from the Stripe web interface.  See https://stripe.com/api for details, or email support@stripe.com if you have any questions.)') unless api_key
+    raise AuthenticationError.new('No API key provided.  (HINT: set your API key using "Pipedriver.api_key = <API-KEY>".  You can generate API keys from the Pipedrive web interface.  See https://developers.pipedrive.com/v1 for details.)') unless api_key
 
     if !verify_ssl_certs
       unless @no_verify
@@ -115,7 +115,7 @@ module Pipedriver
       :lang => 'ruby',
       :lang_version => lang_version,
       :platform => RUBY_PLATFORM,
-      :publisher => 'stripe',
+      :publisher => 'pipedriver',
       :uname => uname
     }
 
@@ -137,7 +137,7 @@ module Pipedriver
       headers = { :x_pipedriver_client_user_agent => Pipedriver::JSON.dump(ua) }.merge(headers)
     rescue => e
       headers = {
-        :x_stripe_client_raw_user_agent => ua.inspect,
+        :x_pipedriver_client_raw_user_agent => ua.inspect,
         :error => "#{e} (#{e.class})"
       }.merge(headers)
     end
@@ -239,13 +239,13 @@ module Pipedriver
   def self.handle_restclient_error(e)
     case e
     when RestClient::ServerBrokeConnection, RestClient::RequestTimeout
-      message = "Could not connect to Stripe (#{@@api_base}).  Please check your internet connection and try again.  If this problem persists, you should check Stripe's service status at https://twitter.com/stripestatus, or let us know at support@stripe.com."
+      message = "Could not connect to Pipedrive (#{@@api_base}).  Please check your internet connection and try again."
     when RestClient::SSLCertificateNotVerified
-      message = "Could not verify Stripe's SSL certificate.  Please make sure that your network is not intercepting certificates.  (Try going to https://api.stripe.com/v1 in your browser.)  If this problem persists, let us know at support@stripe.com."
+      message = "Could not verify Pipedrive's SSL certificate.  Please make sure that your network is not intercepting certificates.  (Try going to https://developers.pipedrive.com/v1 in your browser.)"
     when SocketError
-      message = "Unexpected error communicating when trying to connect to Stripe.  HINT: You may be seeing this message because your DNS is not working.  To check, try running 'host stripe.com' from the command line."
+      message = "Unexpected error communicating when trying to connect to Pipedrive.  HINT: You may be seeing this message because your DNS is not working."
     else
-      message = "Unexpected error communicating with Stripe.  If this problem persists, let us know at support@stripe.com."
+      message = "Unexpected error communicating with Pipedrive."
     end
     message += "\n\n(Network error: #{e.message})"
     raise APIConnectionError.new(message)
