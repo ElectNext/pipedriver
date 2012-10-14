@@ -8,7 +8,7 @@ module Pipedriver
       if self == APIResource
         raise NotImplementedError.new('APIResource is an abstract class.  You should perform actions on its subclasses...')
       end
-      "/#{CGI.escape(class_name.downcase)}s"
+      "/#{CGI.escape(class_name.downcase.pluralize)}"
     end
 
     def url

@@ -1,5 +1,5 @@
 module Pipedriver
-  class Activity < APIResource
+  class Person < APIResource
     include Pipedriver::APIOperations::List
     include Pipedriver::APIOperations::Create
     include Pipedriver::APIOperations::Edit

@@ -17,7 +17,24 @@ module Pipedriver
 
     def self.convert_to_pipedriver_object(resp, api_key)
       types = {
-        'deal' => Deal
+        'activity' => Activity,
+        'activity_type' => ActivityType,
+        'currency' => Currency,
+        'deal' => Deal,
+        'deal_field' => DealField,
+        'file' => File,
+        'filter' => Filter,
+        'organization' => Organization,
+        'organization_field' => OrganizationField,
+        'person' => Person,
+        'person_field' => PersonField,
+        'pipeline' => Pipeline,
+        'product' => Product,
+        'product_field' => ProductField,
+        'search_result' => SearchResult,
+        'stage' => Stage,
+        'user' => User,
+        'user_setting' => UserSetting
       }
       case resp
       when Array
