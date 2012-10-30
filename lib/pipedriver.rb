@@ -120,7 +120,12 @@ module Pipedriver
     }
 
     params = Util.objects_to_ids(params)
+    
     url = self.api_url(url)
+    
+    params ||= {}
+    params[:api_token] = api_key
+    
     case method.to_s.downcase.to_sym
     when :get, :head, :delete
       # Make params into GET parameters
@@ -144,19 +149,19 @@ module Pipedriver
 
     headers = {
       :user_agent => "Pipedrive/v1 RubyBindings/#{Pipedriver::VERSION}",
-      :authorization => "Bearer #{api_key}",
       :content_type => 'application/x-www-form-urlencoded',
       :accept => 'application/json'
     }.merge(headers)
     opts = {
       :method => method,
-      :url => "#{url}?api_token=#{api_key}",
+      :url => url,
       :headers => headers,
       :open_timeout => 30,
       :payload => payload,
       :timeout => 80
     }.merge(ssl_opts)
-
+    
+    puts "Here is the URL: #{url}"
     begin
       response = execute_request(opts)
     rescue SocketError => e
@@ -225,7 +230,7 @@ module Pipedriver
   end
 
   def self.authentication_error(error, rcode, rbody, error_obj)
-    AuthenticationError.new(error[:message], rcode, rbody, error_obj)
+    AuthenticationError.new(error, rcode, rbody, error_obj)
   end
 
   def self.card_error(error, rcode, rbody, error_obj)
