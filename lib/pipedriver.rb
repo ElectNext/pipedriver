@@ -205,7 +205,7 @@ module Pipedriver
     RestClient::Request.execute(opts)
   end
 
-  def self.handle_api_error(rcode, rbody)
+  def self.handle_api_error(rcode, rbody)    
     begin
       error_obj = Pipedriver::JSON.load(rbody)
       error_obj = Util.symbolize_names(error_obj)
@@ -238,8 +238,8 @@ module Pipedriver
     CardError.new(error[:message], error[:param], error[:code], rcode, rbody, error_obj)
   end
 
-  def self.api_error(error, rcode, rbody, error_obj)
-    APIError.new(error[:message], rcode, rbody, error_obj)
+  def self.api_error(error_message, rcode, rbody, error_obj)
+    APIError.new(error_message, rcode, rbody, error_obj)
   end
 
   def self.handle_restclient_error(e)
