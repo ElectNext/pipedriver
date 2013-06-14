@@ -163,6 +163,7 @@ module Pipedriver
     }.merge(ssl_opts)
     
     puts "Here is the URL: #{url}"
+    puts "Here are the opts: #{opts}"
     begin
       response = execute_request(opts)
     rescue SocketError => e
@@ -227,7 +228,7 @@ module Pipedriver
   end
 
   def self.invalid_request_error(error, rcode, rbody, error_obj)
-    InvalidRequestError.new(error[:message], error[:param], rcode, rbody, error_obj)
+    InvalidRequestError.new(error, error[:param], rcode, rbody, error_obj)
   end
 
   def self.authentication_error(error, rcode, rbody, error_obj)
