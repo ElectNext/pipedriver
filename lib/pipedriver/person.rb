@@ -5,5 +5,9 @@ module Pipedriver
     include Pipedriver::APIOperations::Edit
     include Pipedriver::APIOperations::Delete
 
+    # The API uses 'persons' instead of 'people' as the plural of person.
+    def self.url
+      "/persons"
+    end
   end
 end
