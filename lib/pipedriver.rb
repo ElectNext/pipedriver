@@ -205,7 +205,7 @@ module Pipedriver
     RestClient::Request.execute(opts)
   end
 
-  def self.handle_api_error(rcode, rbody)    
+  def self.handle_api_error(rcode, rbody)
     begin
       error_obj = Pipedriver::JSON.load(rbody)
       error_obj = Util.symbolize_names(error_obj)
@@ -216,7 +216,7 @@ module Pipedriver
 
     case rcode
     when 400, 404 then
-      raise invalid_request_error(error, rcode, rbody, error_obj)
+      raise invalid_request_error(error, error_obj[:data], rcode, rbody, error_obj)
     when 401
       raise authentication_error(error, rcode, rbody, error_obj)
     when 402
@@ -226,8 +226,8 @@ module Pipedriver
     end
   end
 
-  def self.invalid_request_error(error, rcode, rbody, error_obj)
-    InvalidRequestError.new(error, error[:param], rcode, rbody, error_obj)
+  def self.invalid_request_error(error, error_param, rcode, rbody, error_obj)
+    InvalidRequestError.new(error, error_param, rcode, rbody, error_obj)
   end
 
   def self.authentication_error(error, rcode, rbody, error_obj)
