@@ -122,17 +122,16 @@ module Pipedriver
 
     params = Util.objects_to_ids(params)
     
-    url = self.api_url(url)
+    url = self.api_url("#{url}?api_token=#{api_key}")
     
     params ||= {}
-    params[:api_token] = api_key
     
     case method.to_s.downcase.to_sym
     when :get, :head, :delete
       # Make params into GET parameters
       if params && params.count > 0
         query_string = Util.flatten_params(params).collect{|key, value| "#{key}=#{Util.url_encode(value)}"}.join('&')
-        url += "?#{query_string}"
+        url += "#{query_string}"
       end
       payload = nil
     else
