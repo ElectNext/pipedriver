@@ -57,6 +57,7 @@ module Pipedriver
   @@api_key = nil
   @@api_base = 'https://api.pipedrive.com/v1'
   @@verify_ssl_certs = false
+  @@ssl_bundle_path = nil
 
   def self.api_url(url='')
     @@api_base + url
