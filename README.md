@@ -18,7 +18,38 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Rails
+
+   	# Create a new contact and set a task to send him a card in 3 days
+   	
+   	Pipedriver.api_key = 'YOUR_PIPEDRIVE_API_KEY'
+   	
+   	# Create a new contact
+   	contact_attrs = {
+      :name => "Gordon Morris",
+      :email => "gordon@electnext.com",
+      :phone => "319-385-7101"
+    }
+    create_resp = Pipedriver::Person.create(contact_attrs)
+    
+    # Get the ID of the newly created contact
+    contact_id = create_resp.success ? create_resp.data["id"] : nil
+    
+    unless contact_id.nil?
+      # Create the task
+      new_activity_attrs = {
+        :subject => 'Send a card', 
+        :type => 'task', 
+        :due_date => 2.days.from_now.to_s, 
+        :person_id => contact_id 
+      }
+      activity_resp = Pipedriver::Activity.create(new_activity_attrs)
+    end
+    
+    
+
+
+TODO: Write more usage instructions here
 
 ## Contributing
 
