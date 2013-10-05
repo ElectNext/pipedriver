@@ -6,7 +6,6 @@ require 'cgi'
 require 'set'
 require 'rubygems'
 require 'openssl'
-require 'active_support/inflector'
 
 gem 'rest-client', '~> 1.4'
 require 'rest_client'
