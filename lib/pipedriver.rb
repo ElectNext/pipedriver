@@ -131,7 +131,7 @@ module Pipedriver
       # Make params into GET parameters
       if params && params.count > 0
         query_string = Util.flatten_params(params).collect{|key, value| "#{key}=#{Util.url_encode(value)}"}.join('&')
-        url += "#{query_string}"
+        url += "&#{query_string}"
       end
       payload = nil
     else
